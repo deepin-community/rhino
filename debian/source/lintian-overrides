@@ -1,0 +1,4 @@
+# The tests contain non obfuscated JS files with really long lines
+rhino source: source-contains-prebuilt-javascript-object testsrc/*
+rhino source: source-is-missing testsrc/*
+rhino source: insane-line-length-in-source-file testsrc/*

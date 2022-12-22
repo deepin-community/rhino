@@ -1,0 +1,23 @@
+Description: Simplify the usage syntax displayed with the --help option
+Author: Emmanuel Bourg <ebourg@apache.org>
+Forwarded: not-needed
+--- a/toolsrc/org/mozilla/javascript/tools/resources/Messages.properties
++++ b/toolsrc/org/mozilla/javascript/tools/resources/Messages.properties
+@@ -28,7 +28,7 @@
+     Invalid option "{0}"
+ 
+ msg.shell.usage =\
+-    Usage: java {0} [options...] [files]\n\
++    Usage: rhino [options...] [files]\n\
+     Valid options are:\n\
+     \    -?, -help          Displays help messages.\n\
+     \    -w                 Enable warnings.\n\
+@@ -110,7 +110,7 @@
+     For more information, try java {0} -h
+ 
+ msg.jsc.usage =\
+-Usage: java {0} [OPTION]... SOURCE...\n\
++Usage: rhino-jsc [OPTION]... SOURCE...\n\
+ Valid options are: \n\
+ \  -version VERSION   Use the specified language version.\n\
+ \                       VERSION should be one of 100|110|120|130|140|150|160|170.\n\

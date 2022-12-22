@@ -1,0 +1,172 @@
+Description: Reintroduces removed classes and methods to preserve the backward compatibility.
+ * Commit 9144b81 renamed isGetter/Setter methods, this breaks closure-compiler
+ * Commit 71468c9 removed deprecated exceptions still used by htmlunit/2.8-2
+Author: Emmanuel Bourg <ebourg@apache.org>
+Forwarded: not-needed
+--- a/src/org/mozilla/javascript/ast/ObjectProperty.java
++++ b/src/org/mozilla/javascript/ast/ObjectProperty.java
+@@ -69,6 +69,10 @@
+         type = Token.GET;
+     }
+ 
++    public void setIsGetter() {
++        setIsGetterMethod();
++    }
++
+     /**
+      * Returns true if this is a getter function.
+      */
+@@ -76,6 +80,10 @@
+         return type == Token.GET;
+     }
+ 
++    public boolean isGetter() {
++        return isGetterMethod();
++    }
++
+     /**
+      * Marks this node as a "setter" property.
+      */
+@@ -83,6 +91,10 @@
+         type = Token.SET;
+     }
+ 
++    public void setIsSetter() {
++        setIsSetterMethod();
++    }
++
+     /**
+      * Returns true if this is a setter function.
+      */
+@@ -90,6 +102,10 @@
+         return type == Token.SET;
+     }
+ 
++    public boolean isSetter() {
++        return isSetterMethod();
++    }
++
+     public void setIsNormalMethod() {
+         type = Token.METHOD;
+     }
+--- a/src/org/mozilla/javascript/ast/FunctionNode.java
++++ b/src/org/mozilla/javascript/ast/FunctionNode.java
+@@ -330,14 +330,26 @@
+         return functionForm == Form.GETTER || functionForm == Form.SETTER || functionForm == Form.METHOD;
+     }
+ 
++    public boolean isGetterOrSetter() {
++        return functionForm == Form.GETTER || functionForm == Form.SETTER;
++    }
++
+     public boolean isGetterMethod() {
+         return functionForm == Form.GETTER;
+     }
+ 
++    public boolean isGetter() {
++        return isGetterMethod();
++    }
++
+     public boolean isSetterMethod() {
+         return functionForm == Form.SETTER;
+     }
+ 
++    public boolean isSetter() {
++        return isSetterMethod();
++    }
++
+     public boolean isNormalMethod() {
+         return functionForm == Form.METHOD;
+     }
+@@ -346,10 +358,18 @@
+         functionForm = Form.GETTER;
+     }
+ 
++    public void setFunctionIsGetter() {
++        setFunctionIsGetterMethod();
++    }
++
+     public void setFunctionIsSetterMethod() {
+         functionForm = Form.SETTER;
+     }
+ 
++    public void setFunctionIsSetter() {
++        setFunctionIsSetterMethod();
++    }
++
+     public void setFunctionIsNormalMethod() {
+         functionForm = Form.METHOD;
+     }
+--- /dev/null
++++ b/src/org/mozilla/javascript/ClassDefinitionException.java
+@@ -0,0 +1,22 @@
++
++/* -*- Mode: java; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
++ *
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++// API class
++
++package org.mozilla.javascript;
++
++/**
++ * @deprecated The exception is no longer thrown by Rhino runtime as
++ * {@link EvaluatorException} is used instead.
++ */
++public class ClassDefinitionException extends RuntimeException
++{
++    static final long serialVersionUID = -5637830967241712746L;
++
++    public ClassDefinitionException(String detail) {
++        super(detail);
++    }
++}
+--- /dev/null
++++ b/src/org/mozilla/javascript/NotAFunctionException.java
+@@ -0,0 +1,20 @@
++
++/* -*- Mode: java; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
++ *
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++// API class
++
++package org.mozilla.javascript;
++
++/**
++ * @deprecated The exception is no longer thrown by Rhino runtime as
++ * {@link EvaluatorException} is used instead.
++ */
++public class NotAFunctionException extends RuntimeException
++{
++    static final long serialVersionUID = 6461524852170711724L;
++
++    public NotAFunctionException() { }
++}
+--- /dev/null
++++ b/src/org/mozilla/javascript/PropertyException.java
+@@ -0,0 +1,22 @@
++/* -*- Mode: java; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
++ *
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++// API class
++
++package org.mozilla.javascript;
++
++/**
++ * @deprecated This exception is no longer thrown by Rhino runtime.
++ */
++public class PropertyException extends RuntimeException
++{
++    static final long serialVersionUID = -8221564865490676219L;
++
++    public PropertyException(String detail) {
++        super(detail);
++    }
++
++}

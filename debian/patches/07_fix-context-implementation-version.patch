@@ -1,0 +1,18 @@
+Description: Fixes the logic to extract the implementation version from the manifest
+ (only when the project is built with Ant, with Gradle the manifest is ok).
+Author: Emmanuel Bourg <ebourg@apache.org>
+Forwarded: https://github.com/mozilla/rhino/commit/f575445cbe5e245#commitcomment-20551124
+--- a/src/org/mozilla/javascript/Context.java
++++ b/src/org/mozilla/javascript/Context.java
+@@ -729,9 +729,9 @@
+                     is = metaUrl.openStream();
+                     Manifest mf = new Manifest(is);
+                     Attributes attrs = mf.getMainAttributes();
+-                    if ("Mozilla Rhino".equals(attrs.getValue("Implementation-Title"))) {
++                    if (attrs.getValue("Implementation-Title") != null && attrs.getValue("Implementation-Title").startsWith("Mozilla Rhino")) {
+                         implementationVersion =
+-                            "Rhino " + attrs.getValue("Implementation-Version") + " " + attrs.getValue("Built-Date").replaceAll("-", " ");
++                            "Rhino " + attrs.getValue("Implementation-Version");
+                         return implementationVersion;
+                     }
+                 } catch (IOException e) {

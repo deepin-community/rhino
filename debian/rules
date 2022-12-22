@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+
+VERSION  = $(shell dpkg-parsechangelog --show-field Version | sed -rne 's/([^-]+).*/\1/p')
+BUILDDIR = build/rhino$(VERSION)
+
+%:
+	dh $@ --with javahelper --with maven-repo-helper
+
+override_dh_auto_build:
+	dh_auto_build -- jar javadoc -Dsource-level=7 -Dtarget-jvm=7
+
+override_dh_installchangelogs:
+	dh_installchangelogs -- RELEASE-NOTES.md
+
+override_mh_install:
+	mh_installpom -plibrhino-java maven/maven-pom.xml --no-parent --relocate=rhino:js
+	mh_installjar -plibrhino-java -l maven/maven-pom.xml --usj-name=js $(BUILDDIR)/js.jar
+
+override_dh_install:
+	dh_install
+
+	mv $(BUILDDIR)/javadoc $(BUILDDIR)/api
+	dh_install -plibrhino-java-doc $(BUILDDIR)/api /usr/share/doc/rhino/

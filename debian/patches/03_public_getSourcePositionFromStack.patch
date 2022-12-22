@@ -1,0 +1,18 @@
+From: Giovanni Mascellani <gio@debian.org>
+Subject: Make getSourcePositionFromStack() pulic
+Forwarded: no
+Last-Update: 2011-12-08
+
+This is needed by package geogebra.
+
+--- a/src/org/mozilla/javascript/Context.java
++++ b/src/org/mozilla/javascript/Context.java
+@@ -2592,7 +2592,7 @@
+         return (Evaluator)Kit.newInstanceOrNull(interpreterClass);
+     }
+ 
+-    static String getSourcePositionFromStack(int[] linep)
++    public static String getSourcePositionFromStack(int[] linep)
+     {
+         Context cx = getCurrentContext();
+         if (cx == null)

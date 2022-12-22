@@ -1,0 +1,3 @@
+version=4
+opts=mode=git,compression=xz,uversionmangle=s/-RC/~RC/;s/pre/~pre/;s/_/./g;s/14R/1.4R/;s/140R/1.4.0R/;s/150R/1.5.0R/ \
+https://github.com/mozilla/rhino refs/tags/Rhino([\d_.R]+)_(?:RELEASE|Release)
